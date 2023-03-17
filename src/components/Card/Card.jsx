@@ -13,6 +13,10 @@ import './index.css';
 
 import { Link } from 'react-router-dom';
 
+// Импортируем выборку избранного
+
+import { findLike } from '../../utils/utils';
+
 // Данные товара в карточке props,props.card деструктурировали item и получили из него значения. Здесь имеются данные о пользователе, это пот ом позволит фильтровать вывод по своим товарам
 
 export const Card = ({
@@ -26,7 +30,7 @@ export const Card = ({
 }) => {
   const {currentUser} = React.useContext(UserContext);
   
-  const isLiked = product.likes.some((el) => el === currentUser._id);
+  const isLiked = findLike(product, currentUser)
   const handleLikeClick = () => {
     onProductLike(product);
   };
@@ -37,7 +41,7 @@ export const Card = ({
       </div>
       <div className='card__sticky card__sticky_type_top-right'>
         <button
-          className={`card__favorite ${isLiked ? 'card__favorite_active' : ''}`}
+          className={`card__favorite ${isLiked ? 'card__favorite_active' : 'card__favorite_not_active'}`}
           onClick={handleLikeClick}
         >
           <Like className='card__liked' />

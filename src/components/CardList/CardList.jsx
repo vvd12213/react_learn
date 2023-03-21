@@ -26,9 +26,9 @@ import { CardContext } from '../../context/cardContext'
 
 // Формируем grid с товарами Здесь имеются данные о пользователе, это пот ом позволит фильтровать вывод по своим товарам
 
-export const CardList = () => {
+export const CardList = ({cards}) => {
 
-  const { cards, setParentCounter, handleProductLike } = useContext(CardContext)
+  const { setParentCounter, handleProductLike } = useContext(CardContext)
   console.log(cards)
  
   return (

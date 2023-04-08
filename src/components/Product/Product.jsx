@@ -1,5 +1,5 @@
 // CSS
-import s from './index.module.css';
+import s from './index.module.scss';
 
 // Logotypes
 import truck from './img/truck.svg';
@@ -21,6 +21,10 @@ import { useLocation, useMatches, useNavigate, useParams } from 'react-router-do
 // Подключили контекст
 import { UserContext } from '../../context/userContext';
 
+// Подключаем выборку избранного
+
+import { findLike } from "../../utils/utils";
+
 
 //import { useParams } from 'react-router-dom';
 
@@ -37,12 +41,23 @@ export const Product = ({ id }) => {
   
   const currentUser = useContext(UserContext);
 
-  const isLiked = product?.likes?.some((el) => el === currentUser._id);
+  const isLiked = findLike(product, currentUser)
+  // const clicker = () => {
+  //   api.addLike().catch((res) =>
+  //       res.status === 403 ?   navigate('/') : navigate('/login')
+  //   )
+  // }
 
   const location = useLocation();
   const params = useParams();
 
-  console.log({ navigate, location, params });
+  // console.log({ navigate, location, params });
+  useEffect(() => {
+    if (location.search.includes("budget=3000")) {
+      // navigate('/part1')
+      // alert('you are really rich man');
+    }
+  }, []);
 
   // Возвращаем макет карточки товара
   return ( 
@@ -67,7 +82,7 @@ export const Product = ({ id }) => {
               <span className={s.num}>0</span>
               <button className={s.plus}>+</button>
             </div>
-            <a href='/#' className={`btn btn_type_primary ${s.cart}`} onClick={() => navigate('/product/63ecf77059b98b038f77b65f')}>
+            <a href='/#' className={`btn btn_type_primary ${s.cart}`} onClick={() => navigate('/product/63e8a48959b98b038f77b52f')}>
               В корзину
             </a>
           </div>

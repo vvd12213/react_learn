@@ -27,6 +27,6 @@ export const CatalogPage = () => {
         <span key={e.id} className='sort-item' onClick={() => setSort(e.id)}>{e.id}</span>
       )}
     </div>
-    <CardList />
+    <CardList cards = {cards}/>
   </>
 };

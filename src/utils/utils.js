@@ -15,7 +15,7 @@ export const getIssues = (numb) => {
 
 export const useDebounce = (searchQuery, delay = 500) => {
   const [debounceValue, setDebounceValue] = useState(searchQuery);
-  console.log({ searchQuery });
+ // console.log({ searchQuery });
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -28,3 +28,7 @@ export const useDebounce = (searchQuery, delay = 500) => {
   }, [searchQuery]);
   return debounceValue;
 };
+
+// Подключили выборку по избранному
+export const findLike = (product, currentUser) =>
+  product?.likes?.some((el) => el === currentUser._id);

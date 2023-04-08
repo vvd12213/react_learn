@@ -11,14 +11,24 @@ import './style.css';
 import { ReactComponent as Basket } from './images/Basket.svg';
 import IconBasket from './basketMaterial/BasketMaterial';
 
-// Импортируем контекст
+// Импортируем контексты
 import { UserContext } from '../../context/userContext';
 
-export const Header = () => {
-  const { currentUser, searchQuery, setSearchQuery, parentCounter } = useContext(UserContext);
-  const [counter, setCounter] = useState(parentCounter);
+import { CardContext } from "../../context/cardContext";
 
-  console.log({ currentUser });
+// Импортируем элемент линк
+import { Link } from "react-router-dom";
+
+// Импортируем иконку лайка
+import { ReactComponent as Like } from '../Card/like.svg';
+
+export const Header = () => {
+  const { currentUser, searchQuery, setSearchQuery, parentCounter } =
+    useContext(UserContext);
+  const [counter, setCounter] = useState(parentCounter);
+  const { favorites } = useContext(CardContext);
+
+  //console.log({ currentUser });
 
 
   useEffect(() => {
@@ -39,6 +49,14 @@ export const Header = () => {
           <div>
             {/* <Basket /> */}
             <IconBasket count={counter} />
+          </div>
+          <div>
+            {/* Добавили через роут ссылку на Избранное */}
+            <Link to={"/favorites"} className="header__bubble-link">
+              <Like className="header__liked" />
+              {favorites.length !== 0 && <span className="header__bubble">{favorites.length}</span>}
+              {/* {favorites.length} */}
+            </Link>
           </div>
           <div>
           <span>{currentUser.email} {' '}</span>

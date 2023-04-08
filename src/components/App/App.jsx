@@ -43,7 +43,16 @@ import { FaqPage } from "../../pages/FAQ/FaqPage";
 import { NotFound } from "../../pages/NotFound/NotFound";
 
 // Страница Избранное
-import { Favorites } from "../../pages/Favorites/Favorites";
+import { Favorites } from "../../pages/Favorites/Favorites"; 
+
+// Форма
+import { Form } from "../Form/Form";
+
+// Регистрационная форма
+import { RegistrationForm } from "../Form/RegistrationForm";
+
+// Модальное окно
+import { Modal } from "../Modal/Modal";
 
 //function App() {
   //const [cards, setCards] = useState([]);
@@ -59,7 +68,6 @@ import { Favorites } from "../../pages/Favorites/Favorites";
     // api.searchProducts(search).then((data) => setCards([...data]));
  // };  
 /* С фильтром пользователя
-
 const handleSearch = (search) => {
   api.searchProducts(search).then((data) => setCards(filteredCards(data, currentUser._id)));
 }; */
@@ -91,7 +99,6 @@ const handleSearch = (search) => {
     handleSearch(debounceValueInApp);
     // console.log({ debounceValueInApp });
   }, [debounceValueInApp]);
-
   useEffect(() => {
     handleSearch(debounceValueInApp);
   }, [debounceValueInApp]); */
@@ -100,7 +107,6 @@ const handleSearch = (search) => {
     if (debounceValueInApp === undefined) return;
     handleSearch(debounceValueInApp);
   }, [debounceValueInApp]);
-
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getProductList()]).then(
       ([userData, productData]) => {
@@ -126,6 +132,8 @@ const handleSearch = (search) => {
     const [parentCounter, setParentCounter] = useState(0);
     const [currentUser, setCurrentUser] = useState({});
     const [favorites, setFavorites] = useState([]);
+    const [formData, setFormData] = useState([]);
+    const [activeModal, setShowModal] = useState(false);
   
     const filteredCards = (products, id) => {
       return products
@@ -223,8 +231,12 @@ const handleSearch = (search) => {
   };
 
   
-  
-  
+  // Данные пользователя модальной формы регистрации
+  const sendData = async (data) => {
+    // setFormData((s) => [...s, data]);
+    const result = await api.registerUser({ ...data, group: "group-10" });
+    console.log({ result });
+  };
 
 
   return (
@@ -270,13 +282,27 @@ const handleSearch = (search) => {
           </Route>
         </Routes>
       </main>
-
      
           <Footer /> */ }
       {/*Поменяли на контексты 180220223  */}
       <UserContext.Provider value={contextValue}>
         <CardContext.Provider value={contextCardValue}>
           <Header />
+          {/* Первая форма <Form sendData={sendData} />
+          {formData.map((e) => (
+            <div>
+              <p>{e.name}</p>
+              <p>{e.lastName}</p>
+              <p>{e.phoneNumber}</p>
+            </div>
+          ))} */}
+          {/*Модапльная форма регистрации */}
+          <button onClick={() => setShowModal(true)}>Регистрация (модальная)</button>
+          <Modal activeModal={activeModal} setShowModal={setShowModal}>
+            <RegistrationForm sendData={sendData} />
+          </Modal>
+
+          {/* Была немодальная форма <RegistrationForm sendData={sendData} /> */}
           <main className='content container'>
             <Routes>
               <Route
@@ -324,3 +350,4 @@ export default App;
 //   <Route path="product" element={<AboutPage />} />
 // </Routes> 
 // </BrowserRouter>
+

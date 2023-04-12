@@ -17,11 +17,15 @@ import { UserContext } from '../../context/userContext';
 import { CardContext } from "../../context/cardContext";
 
 // Импортируем элемент линк
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Импортируем иконку лайка
 import { ReactComponent as Like } from '../Card/like.svg';
 
+//Импортируем иконку авторизации
+import { ReactComponent as Login } from "./images/login.svg";
+
+/* Меняем код на применение возможности вызова модального окна авторизации
 export const Header = () => {
   const { currentUser, searchQuery, setSearchQuery, parentCounter } =
     useContext(UserContext);
@@ -37,7 +41,25 @@ export const Header = () => {
     return () => setCounter(parentCounter)
   }, [parentCounter]);
 
-  // state.push(); deprecated!!!
+  // state.push(); deprecated!!! */
+  export const Header = ({ setShowModal }) => {
+    const { currentUser, searchQuery, setSearchQuery, parentCounter, isAuthentificated } =
+      useContext(UserContext);
+    const [counter, setCounter] = useState(parentCounter);
+    const { favorites } = useContext(CardContext);
+  
+    useEffect(() => {
+      setCounter((st) => st + 1);
+      return () => setCounter(parentCounter);
+  }, [parentCounter]);
+
+ const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
   return (
     <div className='header' id='head'>
       <div className='container'>
@@ -58,6 +80,11 @@ export const Header = () => {
               {/* {favorites.length} */}
             </Link>
           </div>
+          {!isAuthentificated ? <Link to={"/login"} className="header__link" onClick={() => setShowModal(true)}>
+            <Login />
+          </Link> :
+            <span onClick={handleLogout}>logout</span>
+          }
           <div>
           <span>{currentUser.email} {' '}</span>
           <span>{currentUser.about}</span>

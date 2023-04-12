@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./index.scss";
 
-
+/* Убираем верстку формы оставляем базовый шаблон для других форм
 
 export const Form = ({sendData}) => {
   const [contactInfo, setContactInfo] = useState({
@@ -29,48 +29,60 @@ export const Form = ({sendData}) => {
     sendData(contactInfo);
   };
 
-  console.log({ contactInfo });
-
+  console.log({ contactInfo }); */
+ { /*
   return (
-    <>
-      <div style={{ padding: "50px" }}>
+    <> 
+    { /*
+      <div style={{ padding: "50px" }}> */
         {/*Собираем форму */}
-        <form onSubmit={submitForm} className="form">
+       /* <form onSubmit={submitForm} className="form"> */
           {/* Поле ввода имя */}
-          <input
+         /* <input
             type="text"
             name="name"
             placeholder="Name"
             value={contactInfo.name}
             onChange={handleChange}
             className="form__input"
-          />
+          /> */
           {/* Поле ввода фамилия */}
-          <input
+         /* <input
             type="text"
             name="lastName"
             placeholder="lastName"
             value={contactInfo.lastName}
             onChange={handleChange}
             className="form__input"
-          />
+          /> */
           {/* Поле ввода телефон */}
-          <input
+         /* <input
             type="number"
             name="phoneNumber"
             placeholder="phoneNumber"
             value={contactInfo.phoneNumber}
             onChange={handleChange}
             className="form__input"
-          />
+          /> */
           {/* Кнопка обработки формы - отправка данных  */}
-          <button className="btn" onClick={submitForm}>
+         /* <button className="btn" onClick={submitForm}>
             click
           </button>
         </form>
-      </div>
+  </div> 
+    </>
+  );
+}; */}
+
+// const form = useForm()
+
+export const Form = ({ submitForm, children, title }) => {
+  return (
+    <>
+      <form onSubmit={submitForm} className="form">
+        <h1 className="form__title">{title}</h1>
+        {children}
+      </form>
     </>
   );
 };
-
-// const form = useForm()

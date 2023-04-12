@@ -25,6 +25,9 @@ import { UserContext } from '../../context/userContext';
 
 import { findLike } from "../../utils/utils";
 
+// Импортируем рейтинг
+
+import { Rating } from "../Rating/Rating";
 
 //import { useParams } from 'react-router-dom';
 
@@ -32,6 +35,8 @@ import { findLike } from "../../utils/utils";
 
 export const Product = ({ id }) => {
   const [product, setProduct] = useState({});
+  const [rate, setRate] = useState(3);
+  const [currentRating, setCurrentRating] = useState(0);
   useEffect(() => {
     api.getProductById(id).then((data) => setProduct(data));
   }, [id]);
@@ -53,15 +58,32 @@ export const Product = ({ id }) => {
 
   // console.log({ navigate, location, params });
   useEffect(() => {
-    if (location.search.includes("budget=3000")) {
+   /* if (location.search.includes("budget=3000")) {
       // navigate('/part1')
       // alert('you are really rich man');
-    }
-  }, []);
+    } 
+  }, []*/
+  if (!product?.reviews) return;
+    const rateAcc = (product.reviews.reduce((acc, el) => acc = acc + el.rating, 0));
+    const accum = (Math.floor(rateAcc / product.reviews.length))
+    setRate(accum);
+    setCurrentRating(accum)
+  }, [product?.reviews]
+  );
 
   // Возвращаем макет карточки товара
   return ( 
     <>
+      <div>
+      {/* Добавили в карточку рейтинг товара */}
+        <span className='auth__info' onClick={() => navigate(-1)}> {'< '} Назад</span>
+        <h1>{product.name}</h1>
+        <div className={s.rateInfo}>
+          <span>Art <b>2388907</b></span>
+          <Rating rate={rate} setRate={setRate} currentRating={currentRating}/>
+          <span>{product?.reviews?.length} отзывов</span>
+        </div>
+      </div>
       <div className={s.product}>
         <div className={s.imgWrapper}>
           <img className={s.img} src={product.pictures} alt={`Изображение`} />

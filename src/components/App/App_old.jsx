@@ -224,7 +224,9 @@ const handleSearch = (search) => {
       const newCards = cards.sort((a,b)=> new Date(a.created_at) - new Date(b.created_at));
       setCards([...newCards]);
     }
-  };
+  }
+  
+
   const contextValue = {
     setSort: setSortCards,
     currentUser,
@@ -242,6 +244,8 @@ const handleSearch = (search) => {
     favorites,
     setFavorites,
   };
+
+
 /*  Меняем на формы регистрации
   // Данные пользователя модальной формы регистрации
   const sendData = async (data) => {
@@ -249,7 +253,8 @@ const handleSearch = (search) => {
     const result = await api.registerUser({ ...data, group: "group-10" });
     console.log({ result });
   };   */
-  const navigate = useNavigate();
+
+const navigate = useNavigate();
 
   useEffect(() => {
     // const authPath = ['/reset-password', '/register']
@@ -287,54 +292,134 @@ const handleSearch = (search) => {
         </Modal>
       }
     ></Route></>
-
   return (
     <>
+     {/* Отключили в связи с подключением контекста 18022023
+      <Header
+        user={currentUser}
+        parentCounter={parentCounter}
+       // searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+  <main className='content container'> */}
+        {/* Первоначальный вывод карточек
+        searchQuery && (
+          <p>
+            По запросу {searchQuery} найдено {cards.length}
+            {getIssues(cards.length)}
+          </p>
+        ) */}
+       { /* <CardList
+          currentUser={currentUser}
+          handleProductLike={handleProductLike} 
+          setParentCounter={setParentCounter}
+          cards={cards}
+        /> */ }
+        
 
-
-
-
-      {/* Формируем страницу контента  */ }
-    
-      <UserContext.Provider value={contextValue}>
+        { /* Поменяли на контекст chapter 15022023
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <CatalogPage
+                searchQuery={searchQuery}
+                cards={cards}
+                currentUser={currentUser}
+                handleProductLike={handleProductLike}
+                setParentCounter={setParentCounter}
+              />
+            }
+          ></Route>
+          <Route path='/product/:productId' element={<ProductPage currentUser={currentUser} />}>
+          </Route>
+        </Routes>
+      </main>
+     
+          <Footer /> */ }
+      {/*Поменяли на контексты 180220223  */}
+     {/* <UserContext.Provider value={contextValue}>
         <CardContext.Provider value={contextCardValue}>
-          {/* Подключили контексты */}
-          <Header setShowModal={setShowModal} />
-          {/*Подключили модальные окна из хидера */}
-          {isAuthentificated ?
-            <main className="content container">
-              <Routes>
-                {/*Подключаем элементы ресурса */}
-                <Route path="/" element={<CatalogPage />}></Route>
-                <Route
-                  path="product/:productId"
-                  element={<ProductPage />}
-                ></Route>
-                <Route
-                  path="fakeRout/:productId"
-                  element={<ProductPage />}
-                ></Route>
-                <Route path="faq" element={<FaqPage />}></Route>
-                <Route path="favorites" element={<Favorites />}></Route>
-                {authRoutes}
-                <Route path="*" element={<NotFound />}></Route>
-              </Routes>
-            </main>
-            :
-            <div className="not__auth">Пожалуйста, авторизуйтесь
-              <Routes>
-                {authRoutes}
-              </Routes>
-
+          <Header />
+          {/* Первая форма <Form sendData={sendData} />
+          {formData.map((e) => (
+            <div>
+              <p>{e.name}</p>
+              <p>{e.lastName}</p>
+              <p>{e.phoneNumber}</p>
             </div>
-          }
+          ))} */}
+          {/*Модальная форма регистрации тестовая. Сейчас убрали */}
+          { /*<button onClick={() => setShowModal(true)}>Регистрация (модальная)</button>
+          <Modal activeModal={activeModal} setShowModal={setShowModal}>
+            <RegistrationForm sendData={sendData} />
+          </Modal>  */ }
+
+          {/* Была немодальная форма <RegistrationForm sendData={sendData} /> */}
+         {{/* <main className='content container'>
+            <Routes>
+              <Route
+                path='/'
+                element={
+                  <CatalogPage />
+                }
+              ></Route>
+              <Route path='product/:productId' element={<ProductPage />}>
+              </Route>
+              <Route path='fakeRout/:productId' element={<ProductPage />}>
+              </Route>
+              <Route path="faq" element={<FaqPage />}></Route>
+              <Route path="favorites" element={<Favorites />}></Route>
+              <Route path="*" element={<NotFound />}></Route>
+              {/*Ссылка на страницу 404 */}
+              /*<Route path='*' element={<div>404 no found <button onClick={() => navigate('/')}>Home</button></div>}>
+              </Route> */ }
+          {/*  </Routes>
+
+          </main>
           <Footer />
         </CardContext.Provider>
-      </UserContext.Provider>
-    </>
-  );
+      </UserContext.Provider>   */ } 
+      <UserContext.Provider value={contextValue}>
+      <CardContext.Provider value={contextCardValue}>
 
- 
+        {/* Берем из хидера модальную форму аутентификации   */}
+        <Header setShowModal={setShowModal} />
+        {isAuthentificated ?
+       
+          <main className="content container">
+             {/* Формируем страницу контента  см. комментарии заремленный старый код выше */}
+            <Routes>
+              <Route path="/" element={<CatalogPage />}></Route>
+              <Route
+                path="product/:productId"
+                element={<ProductPage />}
+              ></Route>
+              <Route
+                path="fakeRout/:productId"
+                element={<ProductPage />}
+              ></Route>
+              <Route path="faq" element={<FaqPage />}></Route>
+              <Route path="favorites" element={<Favorites />}></Route>
+              {authRoutes}
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </main>
+          :
+          <div className="not__auth">Пожалуйста, авторизуйтесь
+            <Routes>
+              {authRoutes}
+            </Routes>
+
+          </div>
+        }
+        <Footer />
+      </CardContext.Provider>
+    </UserContext.Provider>  
+
+
+    </> 
+  );
 }
 
 export default App;
